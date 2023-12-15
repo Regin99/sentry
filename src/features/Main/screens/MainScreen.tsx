@@ -1,8 +1,8 @@
 import {Button, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {ethers} from 'ethers';
 import {useDispatch} from 'react-redux';
-import {addWallet} from '../../../rtk/slices';
+import {addWallet, deleteAll} from '../../../rtk/slices';
 
 export const MainScreen = () => {
   const [mnemonic, setMnemonic] = useState('');
@@ -10,7 +10,7 @@ export const MainScreen = () => {
   return (
     <View>
       <Text>MainScreen</Text>
-      <Button
+      {/* <Button
         title="What"
         onPress={() => {
           const start = performance.now();
@@ -19,6 +19,12 @@ export const MainScreen = () => {
           console.log(`Creating a Wallet took ${end - start} ms.`);
           dispatch(addWallet(wallet.mnemonic?.phrase || ''));
           wallet.mnemonic && setMnemonic(wallet.mnemonic.phrase);
+        }}
+      /> */}
+      <Button
+        title="DeleteAll"
+        onPress={() => {
+          dispatch(deleteAll());
         }}
       />
       <Text>{mnemonic}</Text>
