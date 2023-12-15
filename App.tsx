@@ -1,26 +1,9 @@
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import {Text, View} from 'react-native';
-
-const HomeScreen = () => {
-  return (
-    <View>
-      <Text>Home Screen</Text>
-    </View>
-  );
-};
+import RootNavigator from './src/routes/RootNavigator';
+import './ethers-setup';
 
 function App(): React.JSX.Element {
-  const NativeStack = createNativeStackNavigator();
-
-  return (
-    <NavigationContainer>
-      <NativeStack.Navigator>
-        <NativeStack.Screen name="Home" component={HomeScreen} />
-      </NativeStack.Navigator>
-    </NavigationContainer>
-  );
+  return <RootNavigator />;
 }
 
 export default App;
