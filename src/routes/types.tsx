@@ -7,6 +7,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 export type AuthStackParamList = {
   Auth: undefined;
+  ImportWallet: undefined;
 };
 
 export type MainTabsParamList = {
