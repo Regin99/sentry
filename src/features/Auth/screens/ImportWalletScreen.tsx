@@ -28,6 +28,7 @@ export const ImportWalletScreen = ({
     onCodeScanned: codes => {
       console.log(`Scanned ${codes.length} codes!`);
       console.log(codes);
+      bottomSheetModalRef.current?.close();
     },
   });
 
