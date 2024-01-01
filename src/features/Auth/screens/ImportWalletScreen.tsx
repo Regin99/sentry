@@ -2,7 +2,6 @@ import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {RootStackScreenProps} from '../../../routes/types';
 import {Screen} from '../../../components/molecules';
-import bip39 from 'react-native-bip39';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {
   Camera,
@@ -11,15 +10,22 @@ import {
   useCodeScanner,
 } from 'react-native-vision-camera';
 import {ethers} from 'ethers';
+import {useDispatch} from 'react-redux';
+import {addWallet} from '../../../rtk/slices';
+import {validateMnemonic} from '../../../utils';
 
 export const ImportWalletScreen = ({
   navigation,
 }: RootStackScreenProps<'ImportWallet'>) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const {hasPermission, requestPermission} = useCameraPermission();
+  const dispatch = useDispatch();
   const device = useCameraDevice('back');
-  const [mnemonic, setMnemonic] = useState('');
+  const phrase =
+    'rug buyer aim sudden country address dinner tragic tumble ethics trust tattoo';
+  const [mnemonic, setMnemonic] = useState(phrase);
   const [isCameraActive, setIsCameraActive] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleOpenCamera = async () => {
     bottomSheetModalRef.current?.present();
@@ -34,29 +40,20 @@ export const ImportWalletScreen = ({
     },
   });
 
-  const phrase =
-    'rug buyer aim sudden country address dinner tragic tumble ethics trust tattoo';
-
   return (
     <Screen>
       <Button title="Back" onPress={navigation.goBack} />
       <Button title="Open modal" onPress={handleOpenCamera} />
+      <TextInput value={mnemonic} onChangeText={setMnemonic} />
+      <Text>{error}</Text>
       <Button
-        title="Validate mnemonic"
+        title="Next"
         onPress={() => {
-          const isMnemonicValid = bip39.validateMnemonic(phrase);
-          console.log('isMnemnic valid', isMnemonicValid);
+          validateMnemonic(mnemonic)
+            ? dispatch(addWallet(mnemonic))
+            : setError('Invalid Mnemonic');
         }}
       />
-
-      <Button
-        title="Generate"
-        onPress={() => {
-          const wallet = ethers.Wallet.createRandom();
-          console.log('wallet', wallet);
-        }}
-      />
-
       <BottomSheetModal
         backgroundStyle={{backgroundColor: '#333333'}}
         ref={bottomSheetModalRef}
