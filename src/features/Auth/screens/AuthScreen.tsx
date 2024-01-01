@@ -14,14 +14,8 @@ import {useDispatch} from 'react-redux';
 import {ethers} from 'ethers';
 
 export const AuthScreen = ({navigation}: RootStackScreenProps<'Auth'>) => {
-  const dispatch = useDispatch();
-
   const onPress = () => {
-    const start = performance.now();
-    const wallet = ethers.Wallet.createRandom();
-    const end = performance.now();
-    console.log(`Creating a Wallet took ${end - start} ms.`);
-    dispatch(addWallet(wallet));
+    navigation.navigate('CreateWallet');
   };
 
   LogBox.ignoreAllLogs(); //Ignore all log notifications

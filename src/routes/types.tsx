@@ -7,6 +7,10 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 export type AuthStackParamList = {
   Auth: undefined;
+  CreateWallet: undefined;
+  CreateWalletConfirm: {
+    mnemonic: string;
+  };
   ImportWallet: undefined;
 };
 

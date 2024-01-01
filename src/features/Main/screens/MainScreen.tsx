@@ -1,33 +1,18 @@
 import {Button, Text, View} from 'react-native';
 import {useState} from 'react';
 import {ethers} from 'ethers';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {addWallet, deleteAll} from '../../../rtk/slices';
+import {Screen} from '../../../components/molecules';
 
 export const MainScreen = () => {
-  const [mnemonic, setMnemonic] = useState('');
-  const dispatch = useDispatch();
+  const wallets = useSelector(state => state.wallets);
   return (
-    <View>
-      <Text>MainScreen</Text>
-      {/* <Button
-        title="What"
-        onPress={() => {
-          const start = performance.now();
-          const wallet = ethers.Wallet.createRandom();
-          const end = performance.now();
-          console.log(`Creating a Wallet took ${end - start} ms.`);
-          dispatch(addWallet(wallet.mnemonic?.phrase || ''));
-          wallet.mnemonic && setMnemonic(wallet.mnemonic.phrase);
-        }}
-      /> */}
-      <Button
-        title="DeleteAll"
-        onPress={() => {
-          dispatch(deleteAll());
-        }}
-      />
-      <Text>{mnemonic}</Text>
-    </View>
+    <Screen>
+      <Text>Wallets</Text>
+      {wallets.wallets.map(wallet => (
+        <Text key={wallet}>{wallet}</Text>
+      ))}
+    </Screen>
   );
 };
