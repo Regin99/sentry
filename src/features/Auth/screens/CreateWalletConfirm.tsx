@@ -4,12 +4,16 @@ import {Screen} from '../../../components/molecules';
 import {RootStackScreenProps} from '../../../routes/types';
 import {useDispatch} from 'react-redux';
 import {addWallet} from '../../../rtk/slices';
+import {ethers} from 'ethers';
+import {setWalletCredentials} from '../../../utils';
 
 export const CreateWalletConfirm = ({
   navigation,
   route,
 }: RootStackScreenProps<'CreateWalletConfirm'>) => {
   const dispatch = useDispatch();
+  const wallet = ethers.Wallet.fromPhrase(route.params.mnemonic);
+  console.log('wallet 2', wallet);
   const splittedMnemonic = route.params.mnemonic.split(' ');
   return (
     <Screen>
@@ -41,8 +45,14 @@ export const CreateWalletConfirm = ({
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => {
-            dispatch(addWallet(route.params.mnemonic));
+          onPress={async () => {
+            await setWalletCredentials(wallet.address, wallet.privateKey);
+            dispatch(
+              addWallet({
+                pubAddress: wallet.address,
+                label: `Wallet ${wallet.address.slice(0, 6)}`,
+              }),
+            );
           }}>
           <Text style={styles.text}>Confirm</Text>
         </TouchableOpacity>

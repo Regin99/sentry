@@ -12,7 +12,7 @@ export const MainScreen = () => {
     <Screen>
       <Text>Wallets</Text>
       {wallets.wallets.map(wallet => (
-        <Text key={wallet}>{wallet}</Text>
+        <Text key={wallet}>{wallet.label}</Text>
       ))}
       <Button title="Delete wallets" onPress={() => dispatch(deleteAll())} />
     </Screen>

@@ -1,8 +1,12 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
-import {HDNodeWallet} from 'ethers';
+
+type Wallet = {
+  pubAddress: string;
+  label: string;
+};
 
 type WalletsState = {
-  wallets: string[];
+  wallets: Wallet[];
 };
 
 const initialState: WalletsState = {
@@ -13,7 +17,7 @@ export const walletsSlice = createSlice({
   name: 'wallets',
   initialState,
   reducers: {
-    addWallet: (state, action: PayloadAction<string>) => {
+    addWallet: (state, action: PayloadAction<Wallet>) => {
       state.wallets.push(action.payload);
     },
     deleteAll: state => {

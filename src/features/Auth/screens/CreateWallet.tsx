@@ -11,6 +11,7 @@ export const CreateWallet = ({
 
   const generateMnemonic = () => {
     const wallet = ethers.Wallet.createRandom();
+    console.log('wallet', wallet);
     setMnemonic(wallet.mnemonic?.phrase || '');
   };
 

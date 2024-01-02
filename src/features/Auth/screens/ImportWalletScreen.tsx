@@ -12,7 +12,7 @@ import {
 import {ethers} from 'ethers';
 import {useDispatch} from 'react-redux';
 import {addWallet} from '../../../rtk/slices';
-import {validateMnemonic} from '../../../utils';
+import {setWalletCredentials, validateMnemonic} from '../../../utils';
 
 export const ImportWalletScreen = ({
   navigation,
@@ -24,6 +24,7 @@ export const ImportWalletScreen = ({
   const phrase =
     'rug buyer aim sudden country address dinner tragic tumble ethics trust tattoo';
   const [mnemonic, setMnemonic] = useState(phrase);
+  const wallet = ethers.Wallet.fromPhrase(mnemonic);
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -48,10 +49,18 @@ export const ImportWalletScreen = ({
       <Text>{error}</Text>
       <Button
         title="Next"
-        onPress={() => {
-          validateMnemonic(mnemonic)
-            ? dispatch(addWallet(mnemonic))
-            : setError('Invalid Mnemonic');
+        onPress={async () => {
+          if (validateMnemonic(mnemonic)) {
+            await setWalletCredentials(wallet.address, wallet.privateKey);
+            dispatch(
+              addWallet({
+                pubAddress: wallet.address,
+                label: `Wallet ${wallet.address.slice(0, 6)}`,
+              }),
+            );
+          } else {
+            setError('Invalid Mnemonic');
+          }
         }}
       />
       <BottomSheetModal
