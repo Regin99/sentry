@@ -28,6 +28,9 @@ export const ImportWalletScreen = ({
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const privateKey =
+    '029599d855309bf192d1c23d8d8e1600905e501d619753dbfca63a5c9a7633bd';
+  const pubKey = '0xf961E4dae0FbaA53524eDCc7A60247706159f4d4';
   const handleOpenCamera = async () => {
     bottomSheetModalRef.current?.present();
   };
@@ -54,13 +57,21 @@ export const ImportWalletScreen = ({
             await setWalletCredentials(wallet.address, wallet.privateKey);
             dispatch(
               addWallet({
-                pubAddress: wallet.address,
+                // pubAddress: wallet.address,
+                pubAddress: pubKey,
                 label: `Wallet ${wallet.address.slice(0, 6)}`,
               }),
             );
           } else {
             setError('Invalid Mnemonic');
           }
+        }}
+      />
+      <Button
+        title="Wallet from private"
+        onPress={() => {
+          const wallet = new ethers.Wallet(privateKey);
+          console.log('wallet', wallet);
         }}
       />
       <BottomSheetModal
